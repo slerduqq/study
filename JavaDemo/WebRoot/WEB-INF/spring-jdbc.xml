@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="false"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd ">
+
+	<!--
+		**********************mysql  druid数据源相关配置*************************-->
+   <!-- apache.dbcp连接池的配置 -->  
+    <bean id="dataSource"  
+        class="org.apache.commons.dbcp.BasicDataSource"  
+        destroy-method="close">  
+        <property name="driverClassName"  
+            value="com.mysql.jdbc.Driver">  
+        </property>  
+        <property name="url" value="jdbc:mysql://192.168.10.215:3306/equdao?useUnicode=true&amp;characterEncoding=utf-8"></property>  
+        <property name="username" value="root"></property>  
+        <property name="password" value="root"></property>  
+        <property name="maxActive" value="100"></property>  
+        <property name="maxIdle" value="30"></property>  
+        <property name="maxWait" value="500"></property>  
+        <property name="defaultAutoCommit" value="true"></property>  
+    </bean> 
+
+<!-- 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		基本属性 url、user、password
+		<property name="url" 
+		value="jdbc:mysql://localhost:3306/zkbc_jyd4?useUnicode=true&amp;characterEncoding=utf-8"/>
+		<property name="username" value="root" />
+		<property name="password" value="yangjing511" />
+		<property name="connectionProperties" value="config.decrypt=false" />开启数据库加密
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		
+		
+		配置初始化大小、最小、最大
+		<property name="initialSize" value="10" />
+		<property name="minIdle" value="10" />
+		<property name="maxActive" value="20" />
+
+		配置获取连接等待超时的时间
+		<property name="maxWait" value="30000"  />
+
+		配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+
+		配置一个连接在池中最小生存的时间，单位是毫秒
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+
+
+		配置监控统计拦截的filters ,及防御sql注入
+		<property name="filters" value="stat,wall,config" />
+	</bean> -->
+
+
+	<!-- spring 自身封装的jdbc -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+
+</beans>

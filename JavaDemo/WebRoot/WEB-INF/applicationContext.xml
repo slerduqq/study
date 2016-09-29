@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"  
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/mvc  
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		 " default-autowire="byName">
+		 				<!--     spring 总配置文件    -->
+
+    <!-- 自动扫描需要用到自动注解的包  过滤掉spring-mvc.xml中扫描到的内容-->
+     <context:component-scan base-package="com.*" />
+	<context:component-scan base-package="equdaoDal.*" />
+				<!--     spring 总配置文件    -->
+ 
+	<!--********引入mysql数据源相关配置*************-->
+	<import resource="spring-jdbc.xml"></import>
+ 		<!--********引入memcached java客户端配置*************-->
+	<!-- <import resource="spring-memcached.xml"></import> -->
+	
+	<!-- 拦截器配置 -->
+    <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/account/**" />
+			<bean class="com.interceptor.SecurityInterceptor">
+				<!--如果有无需拦截的 此处配置/account/**下无需拦截的
+				<property name="unhandlers">
+					<list>
+						<value>login.html</value>
+						<value>ueditor.html</value>
+						<value>port</value>
+					</list>
+				</property>
+				<property name="loginUrl" value="/login.html"></property> -->
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!-- 拦截器配置 商户登陆拦截-->
+    <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/cooAccount/**" />
+			<bean class="com.interceptor.SecurityInterceptorOfCooperate">
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+  <!-- filter的id是在web.xml中配置的那个 -->  
+  <!--  <bean id="LoginFilter" class="com.common.LoginFilter">
+   </bean>  
+   
+   <bean id="memcachedConsumer" class="com.common.EqudaoConfig">
+    	<property name="memExpirSeconds" value="600"/>    此处代表600秒 线程池的大小，因为key和serialNumber的限制，可能只能用一个线程
+   </bean> -->
+</beans>
